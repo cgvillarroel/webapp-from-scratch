@@ -11,6 +11,14 @@ namespace MyWebApplication.Controllers
             return View();
         }
 
+        public ActionResult Users()
+        {
+            UserManager um = new UserManager();
+            UsersModel user = um.GetAllUsers();
+
+            return View(user);
+        }
+
         [HttpPost]
         public ActionResult SignUp(UserModel user)
         {
