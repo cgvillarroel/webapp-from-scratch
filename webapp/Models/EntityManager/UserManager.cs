@@ -43,16 +43,28 @@ namespace MyWebApplication.Models.EntityManager
             }
         }
 
-        public List<Users> GetAllUsers()
+        public UsersModel GetAllUsers()
         {
-            List<Users> users = new List<Users>();
+            UsersModel list = new UsersModel();
 
             using (MyDBContext db = new MyDBContext())
             {
-                users = db.Users.ToList();
+                var users = from u in db.Users
+                            join us in db.SystemUsers
+                        on u.UserID equals us.UserID
+                            select new { u, us };
+
+                list.Users = users.Select(records => new UserModel()
+                {
+                    LoginName = records.us.LoginName,
+                    FirstName = records.u.FirstName,
+                    LastName = records.u.LastName,
+                    Gender = records.u.Gender,
+                    CreatedBy = records.u.CreatedBy
+                }).ToList();
             }
 
-            return users;
+            return list;
         }
 
         public bool IsLoginNameExist(string loginName)
