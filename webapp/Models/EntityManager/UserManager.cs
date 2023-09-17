@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using MyWebApplication.Models.DB;
 using MyWebApplication.Models.ViewModel;
 
