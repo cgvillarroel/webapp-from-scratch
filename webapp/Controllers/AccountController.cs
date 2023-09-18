@@ -44,5 +44,18 @@ namespace MyWebApplication.Controllers
 
             return View();
         }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] UserModel userData)
+        {
+            UserManager um = new UserManager();
+            if (um.IsLoginNameExist(userData.LoginName))
+            {
+                um.UpdateUserAccount(userData);
+                return RedirectToAction("Index"); // Redirect to a relevant action after successful update.
+            }
+            // Handle the case when the login name doesn't exist, e.g., return a relevant error view.
+            return RedirectToAction("LoginNameNotFound");
+        }
     }
 }
