@@ -31,7 +31,7 @@ namespace MyWebApplication.Models.EntityManager
                     UserID = newUserId,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Gender = "1",
+                    Gender = user.Gender,
                     CreatedBy = 1,
                     CreatedDateTime = DateTime.Now,
                     ModifiedBy = 1,
