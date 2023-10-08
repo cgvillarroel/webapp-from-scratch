@@ -8,6 +8,7 @@ namespace MyWebApplication.Controllers
     {
         public ActionResult SignUp()
         {
+            ModelState.Remove("AccountImage");
             return View();
         }
 
