@@ -63,10 +63,43 @@ namespace MyWebApplication.Models.EntityManager
 
         public void UpdateUserAccount(UserModel user)
         {
-            UpdateUserAccount(user, user.LoginName);
+            using (MyDBContext db = new MyDBContext())
+            {
+                // Check if a user with the given login name already exists
+                SystemUsers existingSysUser = db.SystemUsers.FirstOrDefault(
+                    u => u.LoginName == user.LoginName
+                );
+                Users existingUser = db.Users.FirstOrDefault(
+                    u => u.UserID == existingSysUser.UserID
+                );
+                UserRole existingUserRole = db.UserRole.FirstOrDefault(
+                    u => u.UserID == existingSysUser.UserID
+                );
+
+                if (existingSysUser == null && existingUser == null)
+                {
+                    return;
+                }
+
+                // Update the existing user
+                existingSysUser.ModifiedBy = 1; // This has to be updated
+                existingSysUser.ModifiedDateTime = DateTime.Now;
+                existingSysUser.LoginName = user.LoginName;
+
+                // You can also update other properties of the user as needed
+                existingUser.FirstName = user.FirstName;
+                existingUser.LastName = user.LastName;
+                existingUser.Gender = user.Gender;
+
+                if (user.RoleID != null) {
+                    existingUserRole.LookUpRoleID = user.RoleID;
+                }
+
+                db.SaveChanges();
+            }
         }
 
-        public void UpdateUserAccount(UserModel user, string username)
+        public void UpdateProfile(UserModel user, string username)
         {
             using (MyDBContext db = new MyDBContext())
             {

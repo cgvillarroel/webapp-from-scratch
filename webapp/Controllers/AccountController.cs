@@ -143,7 +143,7 @@ namespace MyWebApplication.Controllers
                 return View();
             }
 
-            um.UpdateUserAccount(userData, username);
+            um.UpdateProfile(userData, username);
 
             // HttpContext becomes invalid if we change login name
             // Force user to reauthenticate to prevent unauthorized access
